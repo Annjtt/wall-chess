@@ -1,0 +1,75 @@
+{
+  "name": "wall-chess",
+  "version": "1.2.1",
+  "description": "Wall Chess - шахматы с необычными правилами",
+  "author": "SH Studio",
+  "main": "main.js",
+  "homepage": "./",
+  "scripts": {
+    "start": "electron .",
+    "react-start": "cross-env BROWSER=none DISABLE_ESLINT_PLUGIN=true DISABLE_NEW_JSX_TRANSFORM=true react-scripts start",
+    "react-build": "cross-env DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "build": "npm run react-build && npm run electron-build",
+    "electron-build": "electron-builder --win --x64",
+    "copy-to-build": "node -e \"require('fs').copyFileSync('public/index.html', 'build/index.html')\"",
+    "direct-build": "cross-env DISABLE_ESLINT_PLUGIN=true NODE_ENV=production webpack --config node_modules/react-scripts/config/webpack.config.js",
+    "android": "npm run react-build && npx cap sync android",
+    "android-build": "cd android && gradlew assembleDebug",
+    "android-open": "npx cap open android",
+    "icons": "node scripts/generate-icons-browser.js",
+    "prepare-for-build": "node scripts/prepare-for-build.js",
+    "create-installer": "npm run react-build && npm run prepare-for-build && electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.shstudio.wallchess",
+    "productName": "Wall Chess",
+    "files": [
+      "build/**/*"
+    ],
+    "directories": {
+      "buildResources": "build/assets",
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/assets/app-icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Wall Chess",
+      "runAfterFinish": true
+    }
+  },
+  "dependencies": {
+    "@capacitor/android": "^4.8.0",
+    "@capacitor/cli": "^4.8.0",
+    "@capacitor/core": "^4.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.69.5"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
